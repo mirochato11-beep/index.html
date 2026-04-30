@@ -54,6 +54,16 @@
 
         .nav-links a:hover { color: #e50914; }
 
+        .admin-btn {
+            background: #e50914;
+            color: white !important;
+            padding: 8px 15px !important;
+            border-radius: 20px;
+            font-size: 13px !important;
+        }
+
+        .admin-btn:hover { background: #ff0f1f !important; color: white !important; }
+
         .search-box {
             background: #1a1a1a;
             border: 1px solid #333;
@@ -61,12 +71,12 @@
             padding: 10px 20px;
             color: white;
             font-size: 14px;
-            width: 200px;
+            width: 150px;
             outline: none;
             transition: 0.3s;
         }
 
-        .search-box:focus { border-color: #e50914; width: 250px; }
+        .search-box:focus { border-color: #e50914; width: 200px; }
 
         /* === بەشی هێرۆ === */
         .hero {
@@ -180,6 +190,26 @@
             font-weight: bold;
         }
 
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(229,9,20,0.9);
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            display: none;
+            z-index: 10;
+            line-height: 28px;
+            text-align: center;
+        }
+
+        .admin-mode .delete-btn { display: block; }
+
         .film-info {
             padding: 12px;
         }
@@ -272,7 +302,7 @@
         }
 
         .subtitle-label { color: #aaa; font-size: 13px; margin-bottom: 5px; }
-        .subtitle-text { color: #fff; font-size: 16px; line-height: 1.8; }
+        .subtitle-text { color: #fff; font-size: 16px; line-height: 1.8; direction: rtl; }
 
         .watch-btn {
             width: 100%;
@@ -289,6 +319,119 @@
         }
 
         .watch-btn:hover { transform: scale(1.02); }
+
+        /* === پانێڵی ئەدمین === */
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.98);
+            z-index: 1001;
+            overflow-y: auto;
+        }
+
+        .admin-content {
+            max-width: 500px;
+            margin: 30px auto;
+            background: #111;
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid #e50914;
+        }
+
+        .admin-content h2 {
+            color: #e50914;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .admin-content label {
+            display: block;
+            color: #ccc;
+            margin: 12px 0 5px;
+            font-size: 14px;
+        }
+
+        .admin-content input,
+        .admin-content textarea,
+        .admin-content select {
+            width: 100%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .admin-content input:focus,
+        .admin-content textarea:focus,
+        .admin-content select:focus {
+            border-color: #e50914;
+        }
+
+        .admin-content textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #e50914;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-family: inherit;
+            font-weight: bold;
+        }
+
+        .submit-btn:hover { background: #ff0f1f; }
+
+        .logout-btn {
+            background: #333;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .logout-btn:hover { background: #555; }
+
+        .password-box {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .password-box input {
+            width: 100%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            margin: 15px 0;
+        }
+
+        .password-box input:focus { border-color: #e50914; }
+
+        .error-msg {
+            color: #e50914;
+            font-size: 13px;
+            text-align: center;
+            display: none;
+        }
 
         /* === پەڕەپەڕ === */
         footer {
@@ -318,20 +461,42 @@
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             }
         }
+
+        /* === هۆشداری سەرکەوتن === */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2ecc71;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 14px;
+            z-index: 2000;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; bottom: 10px; }
+            to { opacity: 1; bottom: 30px; }
+        }
     </style>
 </head>
 <body>
+
+    <!-- هۆشداری -->
+    <div class="toast" id="toast">✅ بە سەرکەوتوویی زیاد کرا!</div>
 
     <!-- هێدەر -->
     <nav class="navbar">
         <div class="logo">MIRO</div>
         <ul class="nav-links">
-            <li><a href="#">سەرەکی</a></li>
-            <li><a href="#">فیلمەکان</a></li>
-            <li><a href="#">زنجیرەکان</a></li>
-            <li><a href="#">کوردییەکان</a></li>
+            <li><a href="#" onclick="closeAdmin()">سەرەکی</a></li>
+            <li><a href="#" class="admin-btn" onclick="openAdmin()">🔐 ئەدمین</a></li>
         </ul>
-        <input type="text" class="search-box" placeholder="🔍 گەڕان بەدوای فیلمدا..." onkeyup="searchFilm(this.value)">
+        <input type="text" class="search-box" placeholder="🔍 گەڕان..." onkeyup="searchFilm(this.value)">
     </nav>
 
     <!-- بەشی هێرۆ -->
@@ -341,24 +506,25 @@
     </div>
 
     <!-- پۆلێنەکان -->
-    <div class="categories">
+    <div class="categories" id="categoryList">
         <div class="category active" onclick="filterCategory('all')">🎬 هەموو</div>
-        <div class="category" onclick="filterCategory('action')">💥 ئەکشن</div>
-        <div class="category" onclick="filterCategory('drama')">🎭 دراما</div>
-        <div class="category" onclick="filterCategory('kurdish')">☀️ کوردی</div>
-        <div class="category" onclick="filterCategory('animation')">🎨 ئەنیمەیشن</div>
     </div>
 
     <!-- فیلمەکان -->
     <div class="section-title">🔥 فیلمە بەناوبانگەکان</div>
-    <div class="film-grid" id="filmGrid">
-        <!-- فیلمەکان لێرە زیاد دەبن -->
-    </div>
+    <div class="film-grid" id="filmGrid"></div>
 
-    <!-- مۆدال -->
+    <!-- مۆدالی بینینی فیلم -->
     <div class="modal" id="filmModal">
         <button class="modal-close" onclick="closeModal()">✕</button>
         <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <!-- پانێڵی ئەدمین -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-content" id="adminContent">
+            <!-- پاسۆرد یان فۆڕمی زیادکردن لێرە دەردەکەوێت -->
+        </div>
     </div>
 
     <!-- پەڕەپەڕ -->
@@ -368,8 +534,13 @@
     </footer>
 
     <script>
-        // داتای فیلمەکان
-        const films = [
+        // ==================== ڕێکخستنەکان ====================
+        const ADMIN_PASSWORD = "miro2025"; // 👈 پاسۆردەکەت لێرە بگۆڕە!
+        let isAdmin = false;
+        let currentFilter = 'all';
+
+        // ==================== داتای فیلمەکان ====================
+        let films = JSON.parse(localStorage.getItem('miroFilms')) || [
             {
                 id: 1,
                 title: "Inception (دەستپێک)",
@@ -379,7 +550,7 @@
                 poster: "🌀",
                 subtitle: "ئێمە لە خەونێکی کەسێکی ترداین کە نازانین کێیە",
                 duration: "2h 28m",
-                description: "کۆب پیشەیەکی تایبەتی هەیە لە دزینی نهێنیەکان لە خەونەکاندا. ئەمجارە دەبێت نهێنیەک بخاتە ناو خەونێکەوە نەک دزیبکات."
+                description: "کۆب پیشەیەکی تایبەتی هەیە لە دزینی نهێنیەکان لە خەونەکاندا."
             },
             {
                 id: 2,
@@ -390,7 +561,7 @@
                 poster: "🦇",
                 subtitle: "بۆچی ئەوەندە جدییت؟",
                 duration: "2h 32m",
-                description: "باتمان ڕووبەڕووی جۆکەر دەبێتەوە، کە شێتییەکی ئەنارکیستیە و گۆتام سیتی دەخاتە ئاژاوەوە."
+                description: "باتمان ڕووبەڕووی جۆکەر دەبێتەوە."
             },
             {
                 id: 3,
@@ -399,49 +570,17 @@
                 rating: "8.8",
                 category: "drama",
                 poster: "🏃",
-                subtitle: "ژیان وەک سندوقێکی چۆکلێت وایە، نازانیت چی دەبێت",
+                subtitle: "ژیان وەک سندوقێکی چۆکلێت وایە",
                 duration: "2h 22m",
-                description: "فۆڕێست گەمپ، پیاوێکی سادە، ژیانێکی نائاسایی دەژی لە ڕێگەی ڕووداوە مێژووییەکانی ئەمریکاوە."
-            },
-            {
-                id: 4,
-                title: "Titanic",
-                year: "1997",
-                rating: "7.9",
-                category: "drama",
-                poster: "🚢",
-                subtitle: "من پاشای جیهانم!",
-                duration: "3h 14m",
-                description: "چیرۆکی خۆشەویستی نێوان جاک و ڕۆز لەسەر کەشتی تایتانیک."
-            },
-            {
-                id: 5,
-                title: "فیلمێکی کوردی",
-                year: "2024",
-                rating: "9.5",
-                category: "kurdish",
-                poster: "☀️",
-                subtitle: "ژێرنووسی کوردی بەردەستە",
-                duration: "1h 45m",
-                description: "فیلمێکی جوان و پڕ لە هەست بە زمانی کوردی."
-            },
-            {
-                id: 6,
-                title: "Spirited Away",
-                year: "2001",
-                rating: "8.6",
-                category: "animation",
-                poster: "👻",
-                subtitle: "لە جیهانێکی ڕۆحەکاندا ون بە",
-                duration: "2h 5m",
-                description: "چیهایرۆ دەچێتە جیهانێکی جادوویی پڕ لە ڕۆح و بوونەوەری سەیر."
+                description: "فۆڕێست گەمپ ژیانێکی نائاسایی دەژی."
             }
         ];
 
-        // نیشاندانی فیلمەکان
+        // ==================== نیشاندانی فیلمەکان ====================
         function displayFilms(filter = 'all', search = '') {
             const grid = document.getElementById('filmGrid');
             grid.innerHTML = '';
+            currentFilter = filter;
 
             let filteredFilms = films;
             
@@ -455,14 +594,19 @@
                 );
             }
 
+            if (filteredFilms.length === 0) {
+                grid.innerHTML = '<p style="text-align:center; color:#888; grid-column:1/-1; padding:40px;">هیچ فیلمێک نەدۆزرایەوە 🎬</p>';
+                return;
+            }
+
             filteredFilms.forEach(film => {
                 const card = document.createElement('div');
                 card.className = 'film-card';
-                card.onclick = () => openModal(film);
                 card.innerHTML = `
                     <div class="film-poster">
                         ${film.poster}
                         <div class="film-rating">⭐ ${film.rating}</div>
+                        ${isAdmin ? `<button class="delete-btn" onclick="event.stopPropagation(); deleteFilm(${film.id})">×</button>` : ''}
                     </div>
                     <div class="film-info">
                         <div class="film-title">${film.title}</div>
@@ -471,11 +615,34 @@
                         <button class="play-btn" onclick="event.stopPropagation(); openModal(film)">▶️ بینین</button>
                     </div>
                 `;
+                card.onclick = () => openModal(film);
                 grid.appendChild(card);
             });
+
+            updateCategories();
         }
 
-        // کردنەوەی مۆدال
+        // ==================== پۆلێنەکان ====================
+        function updateCategories() {
+            const categoryList = document.getElementById('categoryList');
+            const categories = ['all', ...new Set(films.map(f => f.category))];
+            
+            categoryList.innerHTML = categories.map(cat => {
+                const name = cat === 'all' ? '🎬 هەموو' : 
+                             cat === 'action' ? '💥 ئەکشن' :
+                             cat === 'drama' ? '🎭 دراما' :
+                             cat === 'kurdish' ? '☀️ کوردی' :
+                             cat === 'animation' ? '🎨 ئەنیمەیشن' : cat;
+                const active = currentFilter === cat ? ' active' : '';
+                return `<div class="category${active}" onclick="filterCategory('${cat}')">${name}</div>`;
+            }).join('');
+        }
+
+        function filterCategory(category) {
+            displayFilms(category);
+        }
+
+        // ==================== مۆدالی فیلم ====================
         function openModal(film) {
             const modal = document.getElementById('filmModal');
             const content = document.getElementById('modalContent');
@@ -500,30 +667,159 @@
             document.body.style.overflow = 'hidden';
         }
 
-        // داخستنی مۆدال
         function closeModal() {
             document.getElementById('filmModal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 
-        // گەڕان
+        // ==================== گەڕان ====================
         function searchFilm(value) {
-            displayFilms('all', value);
+            displayFilms(currentFilter, value);
         }
 
-        // فلتەری پۆلێن
-        function filterCategory(category) {
-            document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
-            event.target.classList.add('active');
-            displayFilms(category);
+        // ==================== پانێڵی ئەدمین ====================
+        function openAdmin() {
+            if (isAdmin) {
+                showAdminForm();
+            } else {
+                showPasswordForm();
+            }
+            document.getElementById('adminPanel').style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
-        // داخستنی مۆدال بە کلیک لە دەرەوە
+        function closeAdmin() {
+            document.getElementById('adminPanel').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function showPasswordForm() {
+            const content = document.getElementById('adminContent');
+            content.innerHTML = `
+                <h2>🔐 چوونەژوورەوە</h2>
+                <div class="password-box">
+                    <p style="color:#ccc;">تکایە پاسۆردی ئەدمین بنووسە:</p>
+                    <input type="password" id="adminPassword" placeholder="پاسۆرد">
+                    <p class="error-msg" id="errorMsg">❌ پاسۆرد هەڵەیە!</p>
+                    <button class="submit-btn" onclick="checkPassword()">چوونەژوورەوە</button>
+                    <button class="submit-btn logout-btn" onclick="closeAdmin()">🔙 گەڕانەوە</button>
+                </div>
+            `;
+        }
+
+        function checkPassword() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                isAdmin = true;
+                showAdminForm();
+                displayFilms(currentFilter);
+                document.body.classList.add('admin-mode');
+                showToast('✅ بەخێربێیت ئەدمین!');
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        }
+
+        function showAdminForm() {
+            const content = document.getElementById('adminContent');
+            content.innerHTML = `
+                <h2>➕ زیادکردنی فیلمی نوێ</h2>
+                
+                <label>🎬 ناوی فیلم:</label>
+                <input type="text" id="filmTitle" placeholder="ناوی فیلم بنووسە...">
+                
+                <label>📅 ساڵ:</label>
+                <input type="text" id="filmYear" placeholder="2025">
+                
+                <label>⭐ ڕێژە (Rating):</label>
+                <input type="text" id="filmRating" placeholder="8.5">
+                
+                <label>⏱️ ماوە:</label>
+                <input type="text" id="filmDuration" placeholder="2h 15m">
+                
+                <label>🎭 پۆلێن:</label>
+                <select id="filmCategory">
+                    <option value="action">ئەکشن</option>
+                    <option value="drama">دراما</option>
+                    <option value="kurdish">کوردی</option>
+                    <option value="animation">ئەنیمەیشن</option>
+                    <option value="horror">ترسناک</option>
+                    <option value="comedy">کۆمیدی</option>
+                </select>
+                
+                <label>🎨 ئیمۆجی (پۆستەر):</label>
+                <input type="text" id="filmPoster" placeholder="🎬">
+                
+                <label>📝 ژێرنووسی کوردی:</label>
+                <textarea id="filmSubtitle" placeholder="ژێرنووسی کوردی سۆرانی بنووسە..."></textarea>
+                
+                <label>📄 کورتەی فیلم:</label>
+                <textarea id="filmDescription" placeholder="کورتەی فیلم بنووسە..."></textarea>
+                
+                <button class="submit-btn" onclick="addFilm()">✅ زیادکردنی فیلم</button>
+                <button class="submit-btn logout-btn" onclick="logout()">🚪 چوونەدەرەوە</button>
+                <button class="submit-btn logout-btn" onclick="closeAdmin()">🔙 گەڕانەوە</button>
+            `;
+        }
+
+        function addFilm() {
+            const newFilm = {
+                id: Date.now(),
+                title: document.getElementById('filmTitle').value || 'فیلمی نوێ',
+                year: document.getElementById('filmYear').value || '2025',
+                rating: document.getElementById('filmRating').value || '8.0',
+                duration: document.getElementById('filmDuration').value || '2h 00m',
+                category: document.getElementById('filmCategory').value,
+                poster: document.getElementById('filmPoster').value || '🎬',
+                subtitle: document.getElementById('filmSubtitle').value || 'ژێرنووسی کوردی',
+                description: document.getElementById('filmDescription').value || 'کورتەی فیلم'
+            };
+
+            films.unshift(newFilm);
+            localStorage.setItem('miroFilms', JSON.stringify(films));
+            
+            displayFilms(currentFilter);
+            showToast('✅ فیلم بە سەرکەوتوویی زیاد کرا!');
+            closeAdmin();
+        }
+
+        function deleteFilm(id) {
+            if (confirm('ئایا دڵنیایت دەتەوێت ئەم فیلمە بسڕیتەوە؟')) {
+                films = films.filter(f => f.id !== id);
+                localStorage.setItem('miroFilms', JSON.stringify(films));
+                displayFilms(currentFilter);
+                showToast('🗑️ فیلم سڕایەوە');
+            }
+        }
+
+        function logout() {
+            isAdmin = false;
+            document.body.classList.remove('admin-mode');
+            displayFilms(currentFilter);
+            closeAdmin();
+            showToast('👋 چوونەدەرەوە');
+        }
+
+        // ==================== هۆشداری ====================
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2000);
+        }
+
+        // ==================== ئیڤێنتەکان ====================
         document.getElementById('filmModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
 
-        // نیشاندانی فیلمەکان لە سەرەتادا
+        document.getElementById('adminPanel').addEventListener('click', function(e) {
+            if (e.target === this) closeAdmin();
+        });
+
+        // ==================== دەستپێکردن ====================
         displayFilms();
     </script>
 
