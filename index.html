@@ -3,108 +3,529 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فیلمەکانم - بە ژێرنووسی کوردی</title>
+    <title>MIRO - سایتی فیلم و سینەما</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: #0d0d0d; 
-            color: white; 
-            font-family: 'Segoe UI', Tahoma; 
+
+        body {
+            background: #0a0a0a;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            min-height: 100vh;
         }
-        header {
-            background: linear-gradient(135deg, #e50914, #b20710);
-            padding: 25px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .film-container {
+
+        /* === هێدەری سەرەکی === */
+        .navbar {
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(15px);
+            padding: 15px 25px;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 20px;
-            gap: 15px;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #222;
         }
-        .film {
+
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #e50914, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover { color: #e50914; }
+
+        .search-box {
             background: #1a1a1a;
-            border-radius: 12px;
-            padding: 20px;
-            width: 330px;
             border: 1px solid #333;
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: white;
+            font-size: 14px;
+            width: 200px;
+            outline: none;
             transition: 0.3s;
         }
-        .film:hover { border-color: #e50914; transform: translateY(-3px); }
-        .film h2 { color: #e50914; margin-bottom: 10px; }
-        .subtitle-box {
-            background: #252525;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 10px 0;
-            border-right: 3px solid #e50914;
+
+        .search-box:focus { border-color: #e50914; width: 250px; }
+
+        /* === بەشی هێرۆ === */
+        .hero {
+            background: linear-gradient(135deg, #1a0a0a 0%, #0a0a0a 50%, #0a1a1a 100%);
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 2px solid #1a1a1a;
         }
-        .subtitle-label { color: #aaa; font-size: 13px; }
-        .subtitle-text { color: #fff; font-size: 16px; margin-top: 5px; line-height: 1.6; }
-        button {
+
+        .hero h1 {
+            font-size: 36px;
+            background: linear-gradient(135deg, #fff, #e50914);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .hero p { color: #888; font-size: 16px; }
+
+        /* === پۆلێنەکان === */
+        .categories {
+            display: flex;
+            gap: 10px;
+            padding: 20px 25px;
+            overflow-x: auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .category {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 13px;
+            color: #ccc;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .category.active, .category:hover {
+            background: #e50914;
+            border-color: #e50914;
+            color: white;
+        }
+
+        /* === کۆنتێنەری فیلمەکان === */
+        .section-title {
+            padding: 20px 25px 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: #e50914;
+            border-radius: 2px;
+        }
+
+        .film-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+            padding: 15px 25px;
+        }
+
+        .film-card {
+            background: #111;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid #1a1a1a;
+            position: relative;
+        }
+
+        .film-card:hover {
+            transform: translateY(-8px);
+            border-color: #e50914;
+            box-shadow: 0 15px 40px rgba(229,9,20,0.3);
+        }
+
+        .film-poster {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            position: relative;
+        }
+
+        .film-rating {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            color: #ffd700;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .film-info {
+            padding: 12px;
+        }
+
+        .film-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        .film-year {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .film-subtitle-badge {
+            display: inline-block;
+            background: #e50914;
+            color: white;
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-top: 6px;
+        }
+
+        .play-btn {
+            width: 100%;
             background: #e50914;
             color: white;
             border: none;
-            padding: 10px 25px;
-            border-radius: 25px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
             margin-top: 8px;
+            font-size: 13px;
+            cursor: pointer;
             transition: 0.3s;
+            font-family: inherit;
         }
-        button:hover { background: #ff0f1f; box-shadow: 0 5px 20px rgba(229,9,20,0.4); }
-        footer { text-align: center; padding: 20px; color: #666; }
+
+        .play-btn:hover { background: #ff0f1f; }
+
+        /* === مۆدالی بینینی فیلم === */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 999;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 700px;
+            margin: 20px auto;
+            background: #111;
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid #333;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            z-index: 1000;
+            background: none;
+            border: none;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #e50914;
+        }
+
+        .subtitle-box {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-right: 3px solid #e50914;
+        }
+
+        .subtitle-label { color: #aaa; font-size: 13px; margin-bottom: 5px; }
+        .subtitle-text { color: #fff; font-size: 16px; line-height: 1.8; }
+
+        .watch-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #e50914, #b20710);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 17px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .watch-btn:hover { transform: scale(1.02); }
+
+        /* === پەڕەپەڕ === */
+        footer {
+            background: #0a0a0a;
+            border-top: 1px solid #1a1a1a;
+            padding: 30px;
+            text-align: center;
+            color: #555;
+            margin-top: 40px;
+        }
+
+        footer .logo {
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        /* === دیزاینی مۆبایل === */
+        @media (min-width: 768px) {
+            .film-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .film-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
     </style>
 </head>
 <body>
 
-    <header>🎬 فیلمەکانم - ژێرنووسی کوردی سۆرانی</header>
+    <!-- هێدەر -->
+    <nav class="navbar">
+        <div class="logo">MIRO</div>
+        <ul class="nav-links">
+            <li><a href="#">سەرەکی</a></li>
+            <li><a href="#">فیلمەکان</a></li>
+            <li><a href="#">زنجیرەکان</a></li>
+            <li><a href="#">کوردییەکان</a></li>
+        </ul>
+        <input type="text" class="search-box" placeholder="🔍 گەڕان بەدوای فیلمدا..." onkeyup="searchFilm(this.value)">
+    </nav>
 
-    <div class="film-container">
-
-        <!-- فیلمی یەکەم -->
-        <div class="film">
-            <h2>🎥 Inception (دەستپێک)</h2>
-            <p style="color:#aaa;">کریستوفر نۆڵان | 2010</p>
-            
-            <div class="subtitle-box">
-                <div class="subtitle-label">🗣️ دیالۆگی فیلم:</div>
-                <div class="subtitle-text">"ئەی ئێمە لە خەونێکی کەسێکی ترداین؟"</div>
-            </div>
-            
-            <div class="subtitle-box">
-                <div class="subtitle-label">📝 ژێرنووسی کوردی:</div>
-                <div class="subtitle-text">ئێمە لە خەونێکی کەسێکی ترداین کە نازانین کێیە</div>
-            </div>
-            
-            <button onclick="alert('لینکی فیلمەکە لێرە دادەنێیت')">▶️ بینینی فیلم</button>
-        </div>
-
-        <!-- فیلمی دووەم -->
-        <div class="film">
-            <h2>🎥 The Dark Knight</h2>
-            <p style="color:#aaa;">کریستوفر نۆڵان | 2008</p>
-            
-            <div class="subtitle-box">
-                <div class="subtitle-label">🗣️ دیالۆگی فیلم:</div>
-                <div class="subtitle-text">"Why so serious?"</div>
-            </div>
-            
-            <div class="subtitle-box">
-                <div class="subtitle-label">📝 ژێرنووسی کوردی:</div>
-                <div class="subtitle-text">بۆچی ئەوەندە جدییت؟</div>
-            </div>
-            
-            <button onclick="alert('لینکی فیلمەکە لێرە دادەنێیت')">▶️ بینینی فیلم</button>
-        </div>
-
+    <!-- بەشی هێرۆ -->
+    <div class="hero">
+        <h1>🎬 MIRO - فیلم بە کوردی</h1>
+        <p>فیلم و زنجیرەکان بە ژێرنووسی کوردی سۆرانی</p>
     </div>
 
-    <footer>© 2025 فیلمەکانم - هەموو مافێک پارێزراوە</footer>
+    <!-- پۆلێنەکان -->
+    <div class="categories">
+        <div class="category active" onclick="filterCategory('all')">🎬 هەموو</div>
+        <div class="category" onclick="filterCategory('action')">💥 ئەکشن</div>
+        <div class="category" onclick="filterCategory('drama')">🎭 دراما</div>
+        <div class="category" onclick="filterCategory('kurdish')">☀️ کوردی</div>
+        <div class="category" onclick="filterCategory('animation')">🎨 ئەنیمەیشن</div>
+    </div>
+
+    <!-- فیلمەکان -->
+    <div class="section-title">🔥 فیلمە بەناوبانگەکان</div>
+    <div class="film-grid" id="filmGrid">
+        <!-- فیلمەکان لێرە زیاد دەبن -->
+    </div>
+
+    <!-- مۆدال -->
+    <div class="modal" id="filmModal">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <!-- پەڕەپەڕ -->
+    <footer>
+        <div class="logo">MIRO</div>
+        <p>&copy; 2025 MIRO - هەموو مافێک پارێزراوە</p>
+    </footer>
+
+    <script>
+        // داتای فیلمەکان
+        const films = [
+            {
+                id: 1,
+                title: "Inception (دەستپێک)",
+                year: "2010",
+                rating: "8.8",
+                category: "action",
+                poster: "🌀",
+                subtitle: "ئێمە لە خەونێکی کەسێکی ترداین کە نازانین کێیە",
+                duration: "2h 28m",
+                description: "کۆب پیشەیەکی تایبەتی هەیە لە دزینی نهێنیەکان لە خەونەکاندا. ئەمجارە دەبێت نهێنیەک بخاتە ناو خەونێکەوە نەک دزیبکات."
+            },
+            {
+                id: 2,
+                title: "The Dark Knight",
+                year: "2008",
+                rating: "9.0",
+                category: "action",
+                poster: "🦇",
+                subtitle: "بۆچی ئەوەندە جدییت؟",
+                duration: "2h 32m",
+                description: "باتمان ڕووبەڕووی جۆکەر دەبێتەوە، کە شێتییەکی ئەنارکیستیە و گۆتام سیتی دەخاتە ئاژاوەوە."
+            },
+            {
+                id: 3,
+                title: "Forrest Gump",
+                year: "1994",
+                rating: "8.8",
+                category: "drama",
+                poster: "🏃",
+                subtitle: "ژیان وەک سندوقێکی چۆکلێت وایە، نازانیت چی دەبێت",
+                duration: "2h 22m",
+                description: "فۆڕێست گەمپ، پیاوێکی سادە، ژیانێکی نائاسایی دەژی لە ڕێگەی ڕووداوە مێژووییەکانی ئەمریکاوە."
+            },
+            {
+                id: 4,
+                title: "Titanic",
+                year: "1997",
+                rating: "7.9",
+                category: "drama",
+                poster: "🚢",
+                subtitle: "من پاشای جیهانم!",
+                duration: "3h 14m",
+                description: "چیرۆکی خۆشەویستی نێوان جاک و ڕۆز لەسەر کەشتی تایتانیک."
+            },
+            {
+                id: 5,
+                title: "فیلمێکی کوردی",
+                year: "2024",
+                rating: "9.5",
+                category: "kurdish",
+                poster: "☀️",
+                subtitle: "ژێرنووسی کوردی بەردەستە",
+                duration: "1h 45m",
+                description: "فیلمێکی جوان و پڕ لە هەست بە زمانی کوردی."
+            },
+            {
+                id: 6,
+                title: "Spirited Away",
+                year: "2001",
+                rating: "8.6",
+                category: "animation",
+                poster: "👻",
+                subtitle: "لە جیهانێکی ڕۆحەکاندا ون بە",
+                duration: "2h 5m",
+                description: "چیهایرۆ دەچێتە جیهانێکی جادوویی پڕ لە ڕۆح و بوونەوەری سەیر."
+            }
+        ];
+
+        // نیشاندانی فیلمەکان
+        function displayFilms(filter = 'all', search = '') {
+            const grid = document.getElementById('filmGrid');
+            grid.innerHTML = '';
+
+            let filteredFilms = films;
+            
+            if (filter !== 'all') {
+                filteredFilms = films.filter(f => f.category === filter);
+            }
+            
+            if (search) {
+                filteredFilms = filteredFilms.filter(f => 
+                    f.title.toLowerCase().includes(search.toLowerCase())
+                );
+            }
+
+            filteredFilms.forEach(film => {
+                const card = document.createElement('div');
+                card.className = 'film-card';
+                card.onclick = () => openModal(film);
+                card.innerHTML = `
+                    <div class="film-poster">
+                        ${film.poster}
+                        <div class="film-rating">⭐ ${film.rating}</div>
+                    </div>
+                    <div class="film-info">
+                        <div class="film-title">${film.title}</div>
+                        <div class="film-year">${film.year} • ${film.duration}</div>
+                        <div class="film-subtitle-badge">ژێرنووسی کوردی</div>
+                        <button class="play-btn" onclick="event.stopPropagation(); openModal(film)">▶️ بینین</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // کردنەوەی مۆدال
+        function openModal(film) {
+            const modal = document.getElementById('filmModal');
+            const content = document.getElementById('modalContent');
+            
+            content.innerHTML = `
+                <div style="text-align:center; font-size:60px;">${film.poster}</div>
+                <div class="modal-title">${film.title}</div>
+                <p style="color:#888;">${film.year} • ${film.duration} • ⭐ ${film.rating}</p>
+                <p style="color:#ccc; margin:15px 0; line-height:1.8;">${film.description}</p>
+                
+                <div class="subtitle-box">
+                    <div class="subtitle-label">📝 ژێرنووسی کوردی سۆرانی:</div>
+                    <div class="subtitle-text">${film.subtitle}</div>
+                </div>
+                
+                <button class="watch-btn" onclick="window.open('https://www.youtube.com/watch?v=فیلمەکە', '_blank')">
+                    ▶️ بینینی فیلم
+                </button>
+            `;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // داخستنی مۆدال
+        function closeModal() {
+            document.getElementById('filmModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // گەڕان
+        function searchFilm(value) {
+            displayFilms('all', value);
+        }
+
+        // فلتەری پۆلێن
+        function filterCategory(category) {
+            document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            displayFilms(category);
+        }
+
+        // داخستنی مۆدال بە کلیک لە دەرەوە
+        document.getElementById('filmModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // نیشاندانی فیلمەکان لە سەرەتادا
+        displayFilms();
+    </script>
 
 </body>
 </html>
