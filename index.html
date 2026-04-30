@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ckb">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فیلمەکانم - بە ژێرنووسی کوردی</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #0d0d0d; 
+            color: white; 
+            font-family: 'Segoe UI', Tahoma; 
+        }
+        header {
+            background: linear-gradient(135deg, #e50914, #b20710);
+            padding: 25px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .film-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            gap: 15px;
+        }
+        .film {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            width: 330px;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+        .film:hover { border-color: #e50914; transform: translateY(-3px); }
+        .film h2 { color: #e50914; margin-bottom: 10px; }
+        .subtitle-box {
+            background: #252525;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-right: 3px solid #e50914;
+        }
+        .subtitle-label { color: #aaa; font-size: 13px; }
+        .subtitle-text { color: #fff; font-size: 16px; margin-top: 5px; line-height: 1.6; }
+        button {
+            background: #e50914;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
+            transition: 0.3s;
+        }
+        button:hover { background: #ff0f1f; box-shadow: 0 5px 20px rgba(229,9,20,0.4); }
+        footer { text-align: center; padding: 20px; color: #666; }
+    </style>
+</head>
+<body>
+
+    <header>🎬 فیلمەکانم - ژێرنووسی کوردی سۆرانی</header>
+
+    <div class="film-container">
+
+        <!-- فیلمی یەکەم -->
+        <div class="film">
+            <h2>🎥 Inception (دەستپێک)</h2>
+            <p style="color:#aaa;">کریستوفر نۆڵان | 2010</p>
+            
+            <div class="subtitle-box">
+                <div class="subtitle-label">🗣️ دیالۆگی فیلم:</div>
+                <div class="subtitle-text">"ئەی ئێمە لە خەونێکی کەسێکی ترداین؟"</div>
+            </div>
+            
+            <div class="subtitle-box">
+                <div class="subtitle-label">📝 ژێرنووسی کوردی:</div>
+                <div class="subtitle-text">ئێمە لە خەونێکی کەسێکی ترداین کە نازانین کێیە</div>
+            </div>
+            
+            <button onclick="alert('لینکی فیلمەکە لێرە دادەنێیت')">▶️ بینینی فیلم</button>
+        </div>
+
+        <!-- فیلمی دووەم -->
+        <div class="film">
+            <h2>🎥 The Dark Knight</h2>
+            <p style="color:#aaa;">کریستوفر نۆڵان | 2008</p>
+            
+            <div class="subtitle-box">
+                <div class="subtitle-label">🗣️ دیالۆگی فیلم:</div>
+                <div class="subtitle-text">"Why so serious?"</div>
+            </div>
+            
+            <div class="subtitle-box">
+                <div class="subtitle-label">📝 ژێرنووسی کوردی:</div>
+                <div class="subtitle-text">بۆچی ئەوەندە جدییت؟</div>
+            </div>
+            
+            <button onclick="alert('لینکی فیلمەکە لێرە دادەنێیت')">▶️ بینینی فیلم</button>
+        </div>
+
+    </div>
+
+    <footer>© 2025 فیلمەکانم - هەموو مافێک پارێزراوە</footer>
+
+</body>
+</html>
